@@ -45,12 +45,23 @@ function request(address, options) {
 
       res.on('data', (buf) => { str += buf; });
       res.on('end', function() {
-        resolve({
-          options: opts,
-          url: address,
-          html: str,
-          markdown: convert(str, opts)
-        });
+        var res = {options: opts, url: address};
+        var obj;
+
+        try {
+          obj = JSON.parse(str);
+        } catch (err) {}
+
+        if (obj && obj.content) {
+          res.html = obj.content;
+        } else {
+          res.html = str;
+          obj = {};
+        }
+
+        res = Object.assign(res, obj);
+        res.markdown = convert(res.html, opts);
+        resolve(res);
       });
     });
 
