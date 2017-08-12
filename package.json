@@ -27,11 +27,16 @@
   "dependencies": {
     "breakdance": "^3.0.1",
     "breakdance-reflinks": "^0.1.4",
+    "isobject": "^3.0.1",
     "log-ok": "^0.1.1",
     "minimist": "^1.2.0",
     "mixin-deep": "^1.2.0",
     "p-reduce": "^1.0.0",
     "write-file": "^1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "gulp-format-md": "^1.0.0"
   },
   "keywords": [
     "breakdance",
@@ -48,10 +53,6 @@
     "request",
     "transform"
   ],
-  "devDependencies": {
-    "mocha": "^3.5.0",
-    "gulp-format-md": "^1.0.0"
-  },
   "lintDeps": {
     "devDependencies": {
       "files": {
