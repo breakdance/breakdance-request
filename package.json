@@ -1,0 +1,84 @@
+{
+  "name": "breakdance-request",
+  "description": "Get a webpage from a URL and convert it to markdown.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jonschlinkert/breakdance-request",
+  "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
+  "repository": "jonschlinkert/breakdance-request",
+  "bugs": {
+    "url": "https://github.com/jonschlinkert/breakdance-request/issues"
+  },
+  "license": "MIT",
+  "files": [
+    "cli.js",
+    "index.js"
+  ],
+  "main": "index.js",
+  "bin": {
+    "bdr": "cli.js",
+    "breakdance-request": "cli.js"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "breakdance": "^3.0.1",
+    "breakdance-reflinks": "^0.1.4",
+    "log-ok": "^0.1.1",
+    "minimist": "^1.2.0",
+    "mixin-deep": "^1.2.0",
+    "p-reduce": "^1.0.0",
+    "write-file": "^1.0.0"
+  },
+  "keywords": [
+    "breakdance",
+    "cli",
+    "command line",
+    "compile",
+    "compiler",
+    "convert",
+    "html",
+    "markdown",
+    "parse",
+    "parser",
+    "render",
+    "request",
+    "transform"
+  ],
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "gulp-format-md": "^1.0.0"
+  },
+  "lintDeps": {
+    "devDependencies": {
+      "files": {
+        "patterns": [
+          "mercury.js"
+        ]
+      }
+    }
+  },
+  "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
+    "related": {
+      "list": [
+        "breakdance",
+        "breakdance-cli",
+        "breakdance-reflinks"
+      ]
+    },
+    "lint": {
+      "reflinks": true
+    }
+  }
+}
