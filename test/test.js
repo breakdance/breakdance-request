@@ -21,48 +21,45 @@ describe('breakdance-request', function() {
       });
   });
 
-  it('should get html from a URL', function(cb) {
+  it('should get html from a URL', function() {
     this.timeout(10000);
 
-    request('https://www.google.com/')
+    return request('https://www.google.com/')
       .then(function(res) {
         assert(res);
         assert.equal(res.url, 'https://www.google.com/');
-        assert.equal(typeof res.html, 'string');
-        assert(res.html.length > 1);
-        cb();
+        assert.equal(typeof res.json.content, 'string');
+        assert(res.json.content.length > 1);
       });
   });
 
-  it('should convert html to markdown', function(cb) {
+  it('should convert html to markdown', function() {
     this.timeout(10000);
 
-    request('http://breakdance.io/plugins.html')
+    return request('http://breakdance.io/plugins.html')
       .then(function(res) {
         assert(res);
         assert.equal(res.url, 'http://breakdance.io/plugins.html');
         assert.equal(typeof res.markdown, 'string');
         assert(res.markdown.length > 1);
-        cb();
       });
   });
 
-  it('should reduce multiple urls', function(cb) {
+  it('should reduce multiple urls', function() {
     this.timeout(10000);
 
-    var paths = ['README.md', 'LICENSE']
-    request.reduce('https://github.com/micromatch/micromatch/blob/master/', paths)
+    var paths = ['plugins.html', 'docs.html']
+    return request.reduce({domain: 'http://breakdance.io/'}, paths)
       .then(function(urls) {
         assert(urls[0]);
-        assert.equal(urls[0].url, 'https://github.com/micromatch/micromatch/blob/master/README.md');
+        assert.equal(urls[0].url, 'http://breakdance.io/plugins.html');
         assert.equal(typeof urls[0].markdown, 'string');
         assert(urls[0].markdown.length > 1);
 
         assert(urls[1]);
-        assert.equal(urls[1].url, 'https://github.com/micromatch/micromatch/blob/master/LICENSE');
+        assert.equal(urls[1].url, 'http://breakdance.io/docs.html');
         assert.equal(typeof urls[1].markdown, 'string');
         assert(urls[1].markdown.length > 1);
-        cb();
       });
   });
 });
