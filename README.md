@@ -39,7 +39,7 @@ request('http://breakdance.io/plugins.html')
   });
 ```
 
-### [.reduce](index.js#L79)
+### [.reduce](index.js#L90)
 
 Convert multiple HTML files to markdown by passing a base `url` and an array of `paths`.
 
