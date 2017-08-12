@@ -7,6 +7,7 @@ var merge = require('mixin-deep');
 var reduce = require('p-reduce');
 var Breakdance = require('breakdance');
 var reflinks = require('breakdance-reflinks');
+var isObject = require('isobject');
 
 /**
  * The main export is a function that takes a `url` and `options`,
@@ -26,11 +27,18 @@ var reflinks = require('breakdance-reflinks');
  */
 
 function request(address, options) {
+  if (isObject(address)) {
+    options = address;
+    address = options.url;
+  }
+
   if (typeof address !== 'string') {
     return Promise.reject(new Error('expected a string'));
   }
 
-  var opts = merge({port: 80}, url.parse(address), options);
+  var opts = merge({port: 80}, options, {url: address});
+  opts = merge({}, opts, url.parse(opts.url));
+
   var protocol = /^https/.test(address) ? https : http;
   var str = '';
 
@@ -45,22 +53,18 @@ function request(address, options) {
 
       res.on('data', (buf) => { str += buf; });
       res.on('end', function() {
-        var res = {options: opts, url: address};
-        var obj;
+        var res = {options: opts, url: address, json: {content: str}};
 
         try {
-          obj = JSON.parse(str);
-        } catch (err) {}
-
-        if (obj && obj.content) {
-          res.html = obj.content;
-        } else {
-          res.html = str;
-          obj = {};
+          res.json = JSON.parse(str);
+        } catch (err) {
+          if (!/Unexpected token/.test(err.message)) {
+            reject(err);
+            return;
+          }
         }
 
-        res = Object.assign(res, obj);
-        res.markdown = convert(res.html, opts);
+        res.markdown = convert(res.json.content, opts);
         resolve(res);
       });
     });
@@ -88,6 +92,11 @@ function request(address, options) {
  */
 
 request.reduce = function(domain, paths, options) {
+  if (isObject(domain)) {
+    options = domain;
+    domain = options.domain;
+  }
+
   return reduce(arrayify(paths), function(acc, path) {
     return request(url.resolve(domain, stringify(path)), options)
       .then((res) => acc.concat(res));
