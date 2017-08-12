@@ -1,7 +1,7 @@
 {
   "name": "breakdance-request",
   "description": "Get a webpage from a URL and convert it to markdown.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/breakdance/breakdance-request",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "breakdance/breakdance-request",
@@ -34,10 +34,6 @@
     "p-reduce": "^1.0.0",
     "write-file": "^1.0.0"
   },
-  "devDependencies": {
-    "mocha": "^3.5.0",
-    "gulp-format-md": "^1.0.0"
-  },
   "keywords": [
     "breakdance",
     "cli",
@@ -53,6 +49,10 @@
     "request",
     "transform"
   ],
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "gulp-format-md": "^1.0.0"
+  },
   "lintDeps": {
     "devDependencies": {
       "files": {
