@@ -28,8 +28,8 @@ describe('breakdance-request', function() {
       .then(function(res) {
         assert(res);
         assert.equal(res.url, 'https://www.google.com/');
-        assert.equal(typeof res.json.content, 'string');
-        assert(res.json.content.length > 1);
+        assert.equal(typeof res.body, 'string');
+        assert(res.body.length > 1);
       });
   });
 

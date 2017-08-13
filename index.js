@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
 var url = require('url');
-var http = require('http');
-var https = require('https');
 var merge = require('mixin-deep');
+var needle = require('needle');
 var reduce = require('p-reduce');
 var Breakdance = require('breakdance');
 var reflinks = require('breakdance-reflinks');
@@ -39,38 +38,22 @@ function request(address, options) {
   var opts = merge({port: 80}, options, {url: address});
   opts = merge({}, opts, url.parse(opts.url));
 
-  var protocol = /^https/.test(address) ? https : http;
-  var str = '';
-
   return new Promise(function(resolve, reject) {
-    var req = protocol.request(opts, function(res) {
-      res.setEncoding('utf8');
-
-      if (res.statusCode < 200 || res.statusCode > 299) {
-        reject(res);
+    needle.get(opts.url, opts, function(err, res) {
+      if (err) {
+        reject(err);
         return;
       }
 
-      res.on('data', (buf) => { str += buf; });
-      res.on('end', function() {
-        var res = {options: opts, url: address, json: {content: str}};
+      var content = isObject(res.body) && res.body.content
+        ? res.body.content
+        : res.body;
 
-        try {
-          res.json = JSON.parse(str);
-        } catch (err) {
-          if (!/Unexpected token/.test(err.message)) {
-            reject(err);
-            return;
-          }
-        }
-
-        res.markdown = convert(res.json.content, opts);
-        resolve(res);
-      });
+      res.url = opts.url;
+      res.options = opts;
+      res.markdown = convert(content, opts);
+      resolve(res);
     });
-
-    req.on('error', (err) => reject(err));
-    req.end();
   });
 }
 
